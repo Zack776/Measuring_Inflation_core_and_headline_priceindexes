@@ -122,18 +122,29 @@ melt2 <- melt(infl_data,
 
 
 # Phillips Curve for each measure of inflation
+# for practice, can be ignored now.
+#melt2 %>% 
+ # filter(date >= '2019-01-01') %>% 
+  #ggplot(aes(x = UEMP_rate, y = YoY_Inflation, color = Price_Index, group = Price_Index))+
+  #facet_wrap(~Price_Index)+
+  #geom_point(size = 3, alpha = 1)+
+  #geom_smooth(se = F, method = "lm")+
+  #theme_fivethirtyeight()
+
+
+# Phillips curve for each measure of inflation
+# a line of best fit is created per decade in each graph
 melt2 %>% 
-  filter(date >= '2019-01-01') %>% 
-  ggplot(aes(x = UEMP_rate, y = YoY_Inflation, color = Price_Index, group = Price_Index))+
+  mutate(decade = paste0(10*as.numeric(substr(year(date), 1, 3)), "s")) %>% 
+  view() %>% 
+  drop_na() %>% 
+  ggplot(aes(x = UEMP_rate, y = YoY_Inflation))+
   facet_wrap(~Price_Index)+
-  geom_point(size = 3, alpha = 1)+
-  geom_smooth(se = F, method = "lm")+
+  geom_point(aes(color = decade), size = 3, alpha = .5)+
+  geom_smooth(se = F, method = "lm", aes(color = decade))+
+  scale_color_brewer(palette = "Set1")+
   theme_fivethirtyeight()
 
-
-# TO DO:
-# How Do we graph phillips curve in respect to each decade?
   
-
 
 
